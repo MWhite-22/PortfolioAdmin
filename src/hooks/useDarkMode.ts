@@ -1,21 +1,27 @@
-// TODO: Make this work with a toggle in the header
+import { useEffect, useState } from 'react';
+
 export const useDarkMode = () => {
-	// On page load or when changing themes, best to add inline in `head` to avoid FOUC
-	if (
-		localStorage.theme === 'dark' ||
-		(!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-	) {
-		document.documentElement.classList.add('dark');
-	} else {
-		document.documentElement.classList.remove('dark');
-	}
+	const [darkMode, setDarkMode] = useState<boolean | undefined>(undefined);
 
-	// Whenever the user explicitly chooses light mode
-	localStorage.theme = 'light';
+	useEffect(() => {
+		setDarkMode(document.documentElement.classList.contains('dark'));
+	}, []);
 
-	// Whenever the user explicitly chooses dark mode
-	localStorage.theme = 'dark';
+	useEffect(() => {
+		if (darkMode !== undefined) {
+			if (darkMode) {
+				document.documentElement.classList.add('dark');
+				localStorage.setItem('MW_DarkMode', 'true');
+			} else {
+				document.documentElement.classList.remove('dark');
+				localStorage.setItem('MW_DarkMode', 'false');
+			}
+		}
+	}, [darkMode]);
 
-	// Whenever the user explicitly chooses to respect the OS preference
-	localStorage.removeItem('theme');
+	const toggleDarkMode = () => {
+		setDarkMode((prev) => !prev);
+	};
+
+	return [darkMode, toggleDarkMode] as const;
 };
