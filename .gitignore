@@ -36,6 +36,7 @@ yarn-error.log*
 .cache/
 .next/
 .nuxt/
+.swc/
 tmp/
 temp/
 .eslintcache

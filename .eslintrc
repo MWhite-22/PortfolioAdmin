@@ -46,5 +46,5 @@
 			}
 		}
 	},
-	"ignorePatterns": ["node_modules/", "build/", "dist/", "prisma", "public", "coverage", "tests"]
+	"ignorePatterns": ["node_modules/", "build/", "dist/", "prisma", "public", "coverage", "tests", "*.config.js"]
 }
