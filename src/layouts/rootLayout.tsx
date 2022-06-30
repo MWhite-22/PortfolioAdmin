@@ -1,6 +1,5 @@
 import { SunIcon, MoonIcon } from '@heroicons/react/outline';
 import Head from 'next/head';
-import Script from 'next/script';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { useDarkMode } from '~/hooks/useDarkMode';
 
@@ -17,11 +16,11 @@ export const RootLayout: React.FC<Props> = ({ children }) => {
 				<title>MW - Portfolio</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<Script strategy='beforeInteractive' src='scripts/darkMode.js' />
 			<div className='flex min-h-screen flex-col'>
 				<header className='flex items-center justify-between border-b-2 p-4 print:hidden'>
 					<h1>Root Layout Header</h1>
 					<button
+						title='DarkModeToggle'
 						className='flex h-8 w-8 items-center justify-center rounded-full bg-slate-400 hover:cursor-pointer hover:bg-slate-500 dark:bg-yellow-300 dark:text-slate-800 dark:hover:bg-yellow-100'
 						onClick={toggleDarkMode}
 					>
