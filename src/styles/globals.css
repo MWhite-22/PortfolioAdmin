@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+	--primaryColor: #824319;
+}
+
 body {
-	@apply h-full w-full bg-slate-100 text-gray-900 transition-colors duration-700 dark:bg-slate-900 dark:text-slate-100 print:bg-white print:text-black;
+	@apply h-full w-full bg-slate-100 text-gray-900 transition-colors duration-700 dark:bg-slate-900 dark:text-slate-100 print:!bg-white print:!text-black;
 }
