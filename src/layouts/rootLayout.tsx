@@ -34,7 +34,7 @@ export const RootLayout: React.FC<Props> = ({ children }) => {
 					<div className='mb-2 flex-grow print:hidden'>
 						<h5>OTHER CONTENT TO GO DOWN HERE...</h5>
 					</div>
-					<p className='text-center text-xs uppercase'>
+					<p className='text-center text-tiny uppercase'>
 						Copyright &copy; Michael J White 2020 - {new Date().getFullYear()}{' '}
 					</p>
 				</footer>
