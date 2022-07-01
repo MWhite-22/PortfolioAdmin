@@ -3,9 +3,10 @@
 @tailwind utilities;
 
 :root {
-	--primaryColor: #824319;
+	--color-primary: 168 85 247;
+	--color-secondary: 133 117 55;
 }
 
 body {
-	@apply h-full w-full bg-slate-100 text-gray-900 transition-colors duration-700 dark:bg-slate-900 dark:text-slate-100 print:!bg-white print:!text-black;
+	@apply h-full w-full bg-body-light text-text-light transition-colors dark:bg-body-dark dark:text-text-dark print:!bg-white print:!text-black;
 }
