@@ -1,17 +1,16 @@
 import type { NextPage } from 'next';
+import type { Session } from 'next-auth';
 import type { AppProps } from 'next/app';
 import type { AppRouter } from '~/server/router/_app';
 import { httpBatchLink } from '@trpc/client/links/httpBatchLink';
 import { loggerLink } from '@trpc/client/links/loggerLink';
 import { withTRPC } from '@trpc/next';
+import { SessionProvider } from 'next-auth/react';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import superjson from 'superjson';
 import ErrorBoundary from '~/components/ErrorBoundary';
 import { RootLayout } from '~/layouts/rootLayout';
 import '~/styles/globals.css';
-
-// import { SessionProvider } from 'next-auth/react'; //DEV: add back nextAuth
-
-// FUTURE: https://nextjs.org/docs/advanced-features/measuring-performance
 
 // ============================================================
 // 			EXTEND NEXT TYPES
@@ -27,16 +26,18 @@ type AppPropsWithLayout = AppProps & {
 // ============================================================
 // 			NEXT APP COMPONENT
 // ============================================================
-// const MyApp: React.FC<AppPropsWithLayout> = ({ Component, pageProps: { session, ...pageProps } }) => { //DEV: add back nextAuth
-const MyApp: React.FC<AppPropsWithLayout> = ({ Component, pageProps }) => {
+const App: React.FC<AppPropsWithLayout> = ({ Component, pageProps: { session, ...pageProps } }) => {
 	const getLayout = Component.getLayout ?? ((page) => <RootLayout>{page}</RootLayout>);
 
-	return getLayout(
-		<ErrorBoundary>
-			{/* <SessionProvider session={session}> */}
-			<Component {...pageProps} />
-			{/* </SessionProvider> */}
-		</ErrorBoundary>,
+	return (
+		<SessionProvider session={session as Session}>
+			{getLayout(
+				<ErrorBoundary>
+					<Component {...pageProps} />
+				</ErrorBoundary>,
+			)}
+			<ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
+		</SessionProvider>
 	);
 };
 
@@ -44,7 +45,7 @@ const MyApp: React.FC<AppPropsWithLayout> = ({ Component, pageProps }) => {
 // 			ENABLE TRPC
 // ============================================================
 export default withTRPC<AppRouter>({
-	config() {
+	config({ ctx }) {
 		return {
 			transformer: superjson,
 			links: [
@@ -54,20 +55,31 @@ export default withTRPC<AppRouter>({
 				}),
 				httpBatchLink({
 					url: `${getBaseUrl()}/api/trpc`,
+					maxBatchSize: 10,
 				}),
 			],
+			headers() {
+				if (ctx?.req) {
+					return {
+						...ctx.req.headers,
+					};
+				} else {
+					return {};
+				}
+			},
 			// https://react-query.tanstack.com/reference/QueryClient
 			queryClientConfig: {
 				defaultOptions: {
 					queries: {
-						staleTime: 60,
+						staleTime: process.env.NODE_ENV === 'production' ? 100 : 2000,
 					},
 				},
 			},
 		};
 	},
 	ssr: false, // https://trpc.io/docs/ssr
-})(MyApp);
+	// responseMeta () {}
+})(App);
 
 // ============================================================
 // 			UTILS

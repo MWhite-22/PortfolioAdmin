@@ -1,4 +1,5 @@
-import Document, { DocumentContext, DocumentInitialProps, Html, Head, Main, NextScript } from 'next/document';
+import type { DocumentContext, DocumentInitialProps } from 'next/document';
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 import { darkModeScript } from '~/hooks/useDarkMode';
 

@@ -1,6 +1,5 @@
 import { SunIcon, MoonIcon } from '@heroicons/react/outline';
 import Head from 'next/head';
-import { ReactQueryDevtools } from 'react-query/devtools';
 import { useDarkMode } from '~/hooks/useDarkMode';
 
 interface Props {
@@ -39,8 +38,6 @@ export const RootLayout: React.FC<Props> = ({ children }) => {
 					</p>
 				</footer>
 			</div>
-
-			{process.env.NODE_ENV !== 'production' && <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />}
 		</>
 	);
 };
